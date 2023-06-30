@@ -1,7 +1,5 @@
 {
   "extends": "expo/tsconfig.base",
-  "include": ["**/*"],
-  "types": ["react"],
   "compilerOptions": {
     "strict": true
   }

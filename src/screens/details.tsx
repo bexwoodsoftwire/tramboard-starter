@@ -1,6 +1,13 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native'
+import { Text } from 'react-native-paper'
+
+const DetailsScreen = () => (
+  <View style={styles.container}>
+    <Text>Details Screen</Text>
+  </View>
+)
+
+export default DetailsScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -9,12 +16,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
-
-const DetailsScreen: React.FC = () => (
-  <View style={styles.container}>
-    <Text>Details Screen</Text>
-  </View>
-);
-
-export default DetailsScreen;
+})

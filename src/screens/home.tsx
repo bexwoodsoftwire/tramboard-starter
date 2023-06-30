@@ -1,8 +1,19 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native'
+import { Button, Text } from 'react-native-paper'
+import { ScreenNavigationProps } from '../routes'
 
-import { ScreenNavigationProps } from '../routes';
+type HomeScreenProps = ScreenNavigationProps<'Home'>
+
+const HomeScreen = ({ navigation }: HomeScreenProps) => (
+  <View style={styles.container}>
+    <Text style={styles.text}>Home Screen</Text>
+    <Button mode="contained" onPress={() => navigation.navigate('Details')}>
+      Go to details
+    </Button>
+  </View>
+)
+
+export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -14,17 +25,4 @@ const styles = StyleSheet.create({
   text: {
     paddingBottom: 24,
   },
-});
-
-type HomeScreenProps = ScreenNavigationProps<'Home'>;
-
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.text}>Home Screen</Text>
-    <Button mode="contained" onPress={() => navigation.navigate('Details')}>
-      Go to details
-    </Button>
-  </View>
-);
-
-export default HomeScreen;
+})

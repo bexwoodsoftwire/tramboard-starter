@@ -1,29 +1,28 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
-import TopBar from './src/components/topBar';
-import theme from './src/theme';
-import { RootStackParamList } from './src/routes';
-import DetailsScreen from './src/screens/details';
-import HomeScreen from './src/screens/home';
-import 'react-native-gesture-handler';
-import { config } from './src/config';
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import 'react-native-gesture-handler'
+import { Provider as PaperProvider } from 'react-native-paper'
+import TopBar from './src/components/topBar'
+import { config } from './src/config'
+import { RootStackParamList } from './src/routes'
+import DetailsScreen from './src/screens/details'
+import HomeScreen from './src/screens/home'
 
 // This ensures that a valid dotenv config is pulled before allowing the app to run,
 // helping to avoid unnoticed runtime crashes due to invalid config.
-config;
+// noinspection BadExpressionStatementJS
+config
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>()
 
 enum Routes {
   HOME = 'Home',
   DETAILS = 'Details',
 }
 
-const App: React.FC = () => (
-  <PaperProvider theme={theme}>
-    <NavigationContainer theme={theme}>
+const App = () => (
+  <PaperProvider>
+    <NavigationContainer>
       <Stack.Navigator
         initialRouteName={Routes.HOME}
         screenOptions={{
@@ -35,6 +34,6 @@ const App: React.FC = () => (
       </Stack.Navigator>
     </NavigationContainer>
   </PaperProvider>
-);
+)
 
-export default App;
+export default App

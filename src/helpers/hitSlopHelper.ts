@@ -1,10 +1,8 @@
-import { Insets } from 'react-native';
+import { Insets } from 'react-native'
 
-export const getEqualHitSlop = (size: number): Insets => {
-  return {
-    top: size,
-    bottom: size,
-    left: size,
-    right: size,
-  };
-};
+export const getEqualHitSlop = (size: number): Insets => ({
+  top: size,
+  bottom: size,
+  left: size,
+  right: size,
+})
