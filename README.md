@@ -21,7 +21,7 @@ This Tramboard App starter is a [React Native/Expo](https://expo.dev/) cross-pla
 1. Install the Expo Go app on your phone from the Play Store/App Store.
 2. Run the code!
    - Run in development mode with hot reloading with `npm start`
-   - If you have changed environment variables or otherwise want to clear the Expo cache, run `npm start -- --clean`
+   - If you have changed environment variables or otherwise want to clear the Expo cache, run `npm start -- --clear`
    - To view the app on your own device, simply scan the QR code in the command line with the Expo Go app
      - Make sure you're on the same Wi-Fi network
    - Once loaded, making code changes to the code (remember to save your changes!) should hot-reload in the app
