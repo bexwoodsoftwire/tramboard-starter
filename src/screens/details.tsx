@@ -3,19 +3,20 @@ import { Text } from 'react-native-paper'
 import DropDownList from '../components/dropDownList'
 import CustomButton from '../components/button'
 import React from 'react'
+import axios from 'axios'
 
 const getMetrolinkStops = () => {
   return ([
-    {key:'1', value:'Piccadilly'},
-    {key:'2', value:'Piccadilly Gardens'},
-    {key:'3', value:'St Peter\'s Square'},
-    {key:'4', value:'Deansgate-Castlefield'},
+    {key:'1', value:'Cornbrook'},
+    {key:'2', value:'Cornbrook'},
+    {key:'3', value:'Cornbrook'},
+    {key:'4', value:'Cornbrook'},
     {key:'5', value:'Cornbrook'},
   ])
 }
 
-const submitStopSelection = async (selectedStop: string) => {
-  const websiteURL = "https://tfgm.com/public-transport/tram/stops/"+selectedStop.replace(/\s/g, '-').replace('\'','')+"-tram"
+const goToStopWebpage = async (stop: string) => {
+  const websiteURL = "https://tfgm.com/public-transport/tram/stops/"+stop.replace(/\s/g, '-').replace('\'','')+"-tram"
   console.log(websiteURL)
   const validURL = await Linking.canOpenURL(websiteURL);
 
@@ -26,13 +27,24 @@ const submitStopSelection = async (selectedStop: string) => {
   }
 }
 
+const makeGetRequest = async () => {
+  const response = await axios({
+    method: 'get',
+    url: 'https://api.tfgm.com/odata/Metrolinks?',
+    headers: {"Ocp-Apim-Subscription-Key": '695237a1c5044581802bbcbe83adb0b7'}
+  })
+
+  const cornbrookScreen = response.data.value.filter(function(tram: any) {return tram.AtcoCode='9400ZZMACRN' && tram.Direction=='Incoming'})[0]
+  console.log(cornbrookScreen)
+};
+
 const DetailsScreen = () => {
   const [selectedStop, setSelectedStop] = React.useState("");
   return (
     <View style={styles.container}>
       <Text>Details Screen</Text>
       <DropDownList data={getMetrolinkStops()} setSelected={setSelectedStop}/>
-      <CustomButton buttonText={"Submit"} onPress={()=>submitStopSelection(selectedStop)}/>
+      <CustomButton buttonText={"Submit"} onPress={()=>{makeGetRequest()}}/>
     </View>
   )
 }
