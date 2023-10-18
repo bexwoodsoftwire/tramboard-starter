@@ -1,4 +1,4 @@
-import { Linking, StyleSheet, View } from 'react-native'
+import { FlatList, Linking, SafeAreaView, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import DropDownList from '../components/dropDownList'
 import CustomButton from '../components/button'
@@ -27,7 +27,7 @@ const goToStopWebpage = async (stop: string) => {
   }
 }
 
-const makeGetRequest = async () => {
+const makeGetRequest = async (setDeparturesAtStop: any) => {
   const response = await axios({
     method: 'get',
     url: 'https://api.tfgm.com/odata/Metrolinks?',
@@ -35,9 +35,8 @@ const makeGetRequest = async () => {
   })
 
   const cornbrookScreen = response.data.value.filter(function(tram: any) {return tram.AtcoCode='9400ZZMACRN' && tram.Direction=='Incoming'})[0]
-  console.log(cornbrookScreen)
-  const departures = mapDepartures(cornbrookScreen)
-  console.log(departures)
+  const departures = mapDepartures(cornbrookScreen).filter(function(tram: any) {return tram.destination!=''})
+  setDeparturesAtStop(departures)
 };
 
 const mapDepartures = (departureObject: any) => (
@@ -49,13 +48,28 @@ const mapDepartures = (departureObject: any) => (
   ]
 )
 
+type ItemProps = {destination: any, status: any, wait: any};
+
+const Item = ({destination, status, wait}: ItemProps) => (
+  <View>
+    <Text>Tram to {destination} {status} in {wait} minutes</Text>
+  </View>
+)
+
 const DetailsScreen = () => {
   const [selectedStop, setSelectedStop] = React.useState("");
+  const [departuresAtStop, setDeparturesAtStop] = React.useState(null);
   return (
     <View style={styles.container}>
       <Text>Details Screen</Text>
       <DropDownList data={getMetrolinkStops()} setSelected={setSelectedStop}/>
-      <CustomButton buttonText={"Submit"} onPress={()=>{makeGetRequest()}}/>
+      <CustomButton buttonText={"Submit"} onPress={()=>{makeGetRequest(setDeparturesAtStop)}}/>
+      {departuresAtStop && (
+      <FlatList
+        data={departuresAtStop}
+        renderItem={({item}) => <Item destination={item.destination} status={item.status} wait={item.wait}/>}
+        keyExtractor={item => item.id}
+      />)}
     </View>
   )
 }
