@@ -1,17 +1,15 @@
 import React from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'
 
-const DropDownListProps = {
-    data: []
-}
-
-const DropDownList = (DropDownListProps: { data: {}[]; }) => {
+const DropDownList: React.FC<{data: { key: string; value: string; }[]}> = ({ 
+    data,
+}) => {
     const [selected, setSelected] = React.useState("");
     
     return(
     <SelectList 
         setSelected={(val: React.SetStateAction<string>) => setSelected(val)} 
-        data={DropDownListProps.data} 
+        data={data} 
         save="value"
     />
     )
