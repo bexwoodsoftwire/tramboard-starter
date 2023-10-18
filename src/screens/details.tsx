@@ -7,13 +7,22 @@ import axios from 'axios'
 
 const getMetrolinkStops = () => {
   return ([
-    {key:'1', value:'Cornbrook'},
-    {key:'2', value:'Cornbrook'},
-    {key:'3', value:'Cornbrook'},
-    {key:'4', value:'Cornbrook'},
+    {key:'1', value:'Piccadilly'},
+    {key:'2', value:'Piccadilly Gardens'},
+    {key:'3', value:'St Peter\'s Square'},
+    {key:'4', value:'Deansgate - Castlefield'},
     {key:'5', value:'Cornbrook'},
   ])
 }
+
+const mapDepartures = (departureObject: any) => (
+  [
+    {id: '01', destination: departureObject.Dest0, status: departureObject.Status0, wait: departureObject.Wait0},
+    {id: '02', destination: departureObject.Dest1, status: departureObject.Status1, wait: departureObject.Wait1},
+    {id: '03', destination: departureObject.Dest2, status: departureObject.Status2, wait: departureObject.Wait2},
+    {id: '04', destination: departureObject.Dest3, status: departureObject.Status3, wait: departureObject.Wait3}
+  ]
+).filter(function(tram: any) {return tram.destination!=''})
 
 const goToStopWebpage = async (stop: string) => {
   const websiteURL = "https://tfgm.com/public-transport/tram/stops/"+stop.replace(/\s/g, '-').replace('\'','')+"-tram"
@@ -27,29 +36,21 @@ const goToStopWebpage = async (stop: string) => {
   }
 }
 
-const makeGetRequest = async (setDeparturesAtStop: any) => {
+const makeGetRequest = async (selectedStop: string, setDeparturesAtStop: any) => {
   const response = await axios({
     method: 'get',
     url: 'https://api.tfgm.com/odata/Metrolinks?',
     headers: {"Ocp-Apim-Subscription-Key": '695237a1c5044581802bbcbe83adb0b7'}
   })
 
-  const cornbrookScreen = response.data.value.filter(function(tram: any) {return tram.AtcoCode='9400ZZMACRN' && tram.Direction=='Incoming'})[0]
-  const departures = mapDepartures(cornbrookScreen).filter(function(tram: any) {return tram.destination!=''})
+  const cornbrookScreen = response.data.value.filter(function(tram: any) {return tram.StationLocation==selectedStop && tram.Direction=='Incoming'})[0]
+  const departures = mapDepartures(cornbrookScreen)
   setDeparturesAtStop(departures)
 };
 
-const mapDepartures = (departureObject: any) => (
-  [
-    {id: '01', destination: departureObject.Dest0, status: departureObject.Status0, wait: departureObject.Wait0},
-    {id: '02', destination: departureObject.Dest1, status: departureObject.Status1, wait: departureObject.Wait1},
-    {id: '03', destination: departureObject.Dest2, status: departureObject.Status2, wait: departureObject.Wait2},
-    {id: '04', destination: departureObject.Dest3, status: departureObject.Status3, wait: departureObject.Wait3}
-  ]
-)
+
 
 type ItemProps = {destination: any, status: any, wait: any};
-
 const Item = ({destination, status, wait}: ItemProps) => (
   <View>
     <Text>Tram to {destination} {status} in {wait} minutes</Text>
@@ -61,9 +62,9 @@ const DetailsScreen = () => {
   const [departuresAtStop, setDeparturesAtStop] = React.useState(null);
   return (
     <View style={styles.container}>
-      <Text>Details Screen</Text>
+      <Text style={styles.text}>Departures</Text>
       <DropDownList data={getMetrolinkStops()} setSelected={setSelectedStop}/>
-      <CustomButton buttonText={"Submit"} onPress={()=>{makeGetRequest(setDeparturesAtStop)}}/>
+      <CustomButton buttonText={"Submit"} onPress={()=>{makeGetRequest(selectedStop, setDeparturesAtStop)}}/>
       {departuresAtStop && (
       <FlatList
         data={departuresAtStop}
@@ -85,4 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    margin: 10,
+  }
 })
