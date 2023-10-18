@@ -1,4 +1,4 @@
-import { FlatList, Linking, SafeAreaView, StyleSheet, View } from 'react-native'
+import { FlatList, Linking, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import DropDownList from '../components/dropDownList'
 import CustomButton from '../components/button'
@@ -52,7 +52,7 @@ const makeGetRequest = async (selectedStop: string, setDeparturesAtStop: any) =>
 
 type ItemProps = {destination: any, status: any, wait: any};
 const Item = ({destination, status, wait}: ItemProps) => (
-  <View>
+  <View style={styles.departureItem}>
     <Text>Tram to {destination} {status} in {wait} minutes</Text>
   </View>
 )
@@ -75,8 +75,6 @@ const DetailsScreen = () => {
   )
 }
 
-
-
 export default DetailsScreen
 
 const styles = StyleSheet.create({
@@ -88,5 +86,13 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 10,
+  },
+  departureItem:{
+    backgroundColor: 'gold',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    borderColor: 'black',
   }
 })

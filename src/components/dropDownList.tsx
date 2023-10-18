@@ -18,9 +18,8 @@ export default DropDownList
 
 const styles = StyleSheet.create({
     boxStyles: {
-      backgroundColor: 'gold',
       alignItems: 'center',
       justifyContent: 'center',
       margin:  5
     }
-  })
+})
