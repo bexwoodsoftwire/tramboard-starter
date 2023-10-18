@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import DropDownList from '../components/dropDownList'
+import CustomButton from '../components/button'
 
 const getMetrolinkStops = () => {
   return ([
@@ -18,6 +19,7 @@ const DetailsScreen = () => {
     <View style={styles.container}>
       <Text>Details Screen</Text>
       <DropDownList data={data}/>
+      <CustomButton buttonText={"Submit"} onPress={()=>{}}/>
     </View>
   )
 }
