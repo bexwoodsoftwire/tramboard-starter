@@ -22,7 +22,7 @@ const submitStopSelection = async (selectedStop: string) => {
   if (validURL) {
     await Linking.openURL(websiteURL);
   } else {
-    console.log(`Don't know how to open this URL: ${websiteURL}`);
+    console.error(`Invalid URL: ${websiteURL}`);
   }
 }
 
