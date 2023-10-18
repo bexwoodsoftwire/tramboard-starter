@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { Linking, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import DropDownList from '../components/dropDownList'
 import CustomButton from '../components/button'
@@ -14,14 +14,25 @@ const getMetrolinkStops = () => {
   ])
 }
 
+const submitStopSelection = async (selectedStop: string) => {
+  const websiteURL = "https://tfgm.com/public-transport/tram/stops/"+selectedStop.replace(/\s/g, '-').replace('\'','')+"-tram"
+  console.log(websiteURL)
+  const validURL = await Linking.canOpenURL(websiteURL);
+
+  if (validURL) {
+    await Linking.openURL(websiteURL);
+  } else {
+    console.log(`Don't know how to open this URL: ${websiteURL}`);
+  }
+}
+
 const DetailsScreen = () => {
-  const data = getMetrolinkStops()
   const [selectedStop, setSelectedStop] = React.useState("");
   return (
     <View style={styles.container}>
       <Text>Details Screen</Text>
-      <DropDownList data={data} setSelected={setSelectedStop}/>
-      <CustomButton buttonText={"Submit"} onPress={()=>{}}/>
+      <DropDownList data={getMetrolinkStops()} setSelected={setSelectedStop}/>
+      <CustomButton buttonText={"Submit"} onPress={()=>submitStopSelection(selectedStop)}/>
     </View>
   )
 }
