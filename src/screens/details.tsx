@@ -36,7 +36,18 @@ const makeGetRequest = async () => {
 
   const cornbrookScreen = response.data.value.filter(function(tram: any) {return tram.AtcoCode='9400ZZMACRN' && tram.Direction=='Incoming'})[0]
   console.log(cornbrookScreen)
+  const departures = mapDepartures(cornbrookScreen)
+  console.log(departures)
 };
+
+const mapDepartures = (departureObject: any) => (
+  [
+    {id: '01', destination: departureObject.Dest0, status: departureObject.Status0, wait: departureObject.Wait0},
+    {id: '02', destination: departureObject.Dest1, status: departureObject.Status1, wait: departureObject.Wait1},
+    {id: '03', destination: departureObject.Dest2, status: departureObject.Status2, wait: departureObject.Wait2},
+    {id: '04', destination: departureObject.Dest3, status: departureObject.Status3, wait: departureObject.Wait3}
+  ]
+)
 
 const DetailsScreen = () => {
   const [selectedStop, setSelectedStop] = React.useState("");
